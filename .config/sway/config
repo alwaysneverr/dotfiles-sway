@@ -1,0 +1,189 @@
+# =============================================================================
+# i3wm CONFIGURATION FILE
+# =============================================================================
+
+# --- Core Settings ---
+set $mod Mod4
+floating_modifier $mod
+tiling_drag enable
+font pango:JetBrains Mono 10
+default_border pixel 3
+default_floating_border pixel 3
+
+gaps inner 10
+
+# --- Custom Color Palette ---
+set $bg-dark    #1e1416
+set $bg-light   #362225
+set $text-std   #eedec8
+set $accent     #e03e3e
+set $gold       #ecc857
+set $urgent     #d02a3a
+
+# --- Window Borders & Decorations ---
+#                       border          background      text            indicator       child_border
+client.focused          $accent         $accent         $bg-dark        $gold           $accent
+client.focused_inactive $bg-light        $bg-light       $text-std       $bg-dark        $bg-light
+client.unfocused        $bg-dark        $bg-dark        $text-std       $bg-dark        $bg-dark
+client.urgent           $urgent         $urgent         $text-std       $urgent         $urgent
+
+# =============================================================================
+# WORKSPACE DEFINITIONS
+# =============================================================================
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# Switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# =============================================================================
+# KEYBINDINGS
+# =============================================================================
+
+# --- Session Management ---
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+q kill
+
+# --- Application Launchers ---
+bindsym $mod+Return exec kitty
+bindsym $mod+d exec --no-startup-id wofi --show drun
+
+
+# --- Window Focus Control ---
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# --- Window Movement ---
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# --- Layout Control ---
+bindsym $mod+h split h
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+
+# --- Hardware Media Controls ---
+# Audio Controls
+bindsym XF86AudioRaiseVolume exec wpctl -set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl -set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+# Brightness Controls
+bindsym XF86MonBrightnessUp exec sh -c 'f=/sys/class/backlight/acpi_video0; m=$(cat $f/max_brightness); c=$(cat $f/brightness); n=$((c + m/10)); [ $n -gt $m ] && n=$m; echo $n > $f/brightness'
+bindsym XF86MonBrightnessDown exec sh -c 'f=/sys/class/backlight/acpi_video0; m=$(cat $f/max_brightness); c=$(cat $f/brightness); n=$((c - m/10)); [ $n -lt 1 ] && n=1; echo $n > $f/brightness'
+
+# =============================================================================
+# WINDOW RULES
+# =============================================================================
+
+# =============================================================================
+# MODES
+# =============================================================================
+
+mode "resize" {
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# =============================================================================
+# STATUS BAR
+# =============================================================================
+
+#bar {
+#        status_command i3status -c ~/.config/i3status/config
+#        position bottom
+#        colors {
+#                background      $bg-dark
+#                statusline      $text-std
+#                separator       $bg-light
+#                
+#                #                       border          background      text
+#                focused_workspace       $accent         $accent         $bg-dark
+#                active_workspace        $bg-light       $bg-light       $text-std
+#                inactive_workspace      $bg-dark        $bg-dark        $text-std
+#                urgent_workspace        $urgent         $urgent         $text-std
+#        }
+#}
+
+
+# =============================================================================
+# AUTOSTART APPLICATIONS (DAEMONS & UTILITIES)
+# =============================================================================
+
+
+# Open Dunst Notification Center Log
+# --- Wayland additions ---
+output * bg /home/alwaysnever/Pictures/Wallpapers/Hsin.png fill
+input type:touchpad {
+      tap enabled
+}
+bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes, exit' 'swaymsg exit'
+bindsym Print exec grim ~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png
+bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png
+bindsym $mod+Shift+Print exec grim -g "$(slurp)" - | wl-copy
+exec mako
+exec gentoo-pipewire-launcher
+exec waybar
+exec swayidle -w timeout 300 'swaylock -f -c 1e1416' before-sleep 'swaylock -f -c 1e1416'
