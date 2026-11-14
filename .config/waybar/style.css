@@ -33,3 +33,13 @@ padding: 0 10px;
 #network.disconnected, #pulseaudio.muted {
 color: #d02a3a;
 }
+/* append to the end of ~/.config/waybar/style.css */
+#workspaces button { padding: 0 8px; color: #eedec8; }
+#workspaces button.empty { color: #707880; }
+#workspaces button.focused { color: #ecc587; border-bottom: 2px solid #e03e3e; }
+#workspaces button.urgent { background: #d02a3a; color: #eedec8; }
+#pulseaudio.muted { color: #707880; }
+
+#workspaces { margin-right: 14px; }
+#workspaces button { margin: 0 3px; }
+#custom-title { margin-left: 4px; }

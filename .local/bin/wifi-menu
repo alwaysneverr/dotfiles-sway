@@ -1,0 +1,26 @@
+#!/bin/sh
+# wifi-menu: click-menu for Wi-Fi using nmcli + wofi (SSIDs only shown while the menu is open)
+nmcli radio wifi on >/dev/null 2>&1
+list=$(nmcli -t --escape no -f IN-USE,SIGNAL,SECURITY,SSID dev wifi list --rescan auto 2>/dev/null |
+  while IFS=: read -r use sig sec ssid; do
+    [ -z "$ssid" ] && continue
+    mark=" "; [ "$use" = "*" ] && mark="*"
+    printf '%s %3s%%  %s\n' "$mark" "$sig" "$ssid"
+  done | sort -u)
+choice=$(printf '%s\n%s\n%s\n%s\n' "$list" "── Disconnect" "── Rescan" "── nmtui" |
+  wofi --dmenu --prompt "Wi-Fi" --cache-file /dev/null) || exit 0
+case "$choice" in
+  "── Disconnect") nmcli dev disconnect "$(nmcli -t -f DEVICE,TYPE dev | awk -F: '$2=="wifi"{print $1; exit}')" ;;
+  "── Rescan")     nmcli dev wifi rescan; exec "$0" ;;
+  "── nmtui")      exec kitty --class nmtui-float -o initial_window_width=80c -o initial_window_height=26c -o remember_window_size=no -e nmtui ;;
+  "")              exit 0 ;;
+  *)
+    ssid=$(printf '%s' "$choice" | sed -E 's/^. +[0-9]+%  //; s/ *$//')
+    if ! nmcli dev wifi connect "$ssid" >/dev/null 2>&1; then
+      pass=$(wofi --dmenu --password --prompt "Password for $ssid" --cache-file /dev/null) || exit 0
+      nmcli dev wifi connect "$ssid" password "$pass" >/dev/null 2>&1 \
+        && notify-send "Wi-Fi" "Connected" || notify-send -u critical "Wi-Fi" "Could not connect"
+    else
+      notify-send "Wi-Fi" "Connected"
+    fi ;;
+esac
