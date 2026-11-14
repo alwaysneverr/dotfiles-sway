@@ -1,5 +1,5 @@
 # =============================================================================
-# i3wm CONFIGURATION FILE
+# Sway CONFIGURATION FILE
 # =============================================================================
 
 # --- Core Settings ---
@@ -7,10 +7,10 @@ set $mod Mod4
 floating_modifier $mod
 tiling_drag enable
 font pango:JetBrains Mono 10
-default_border pixel 3
+default_border pixel 2
 default_floating_border pixel 3
 
-gaps inner 10
+gaps inner 8
 
 # --- Custom Color Palette ---
 set $bg-dark    #1e1416
@@ -114,8 +114,8 @@ bindsym $mod+a focus parent
 
 # --- Hardware Media Controls ---
 # Audio Controls
-bindsym XF86AudioRaiseVolume exec wpctl -set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
-bindsym XF86AudioLowerVolume exec wpctl -set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 # Brightness Controls
@@ -125,6 +125,8 @@ bindsym XF86MonBrightnessDown exec sh -c 'f=/sys/class/backlight/acpi_video0; m=
 # =============================================================================
 # WINDOW RULES
 # =============================================================================
+
+for_window [app_id=".*"] opacity 0.95
 
 # =============================================================================
 # MODES
@@ -183,7 +185,12 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes, exit' 'swa
 bindsym Print exec grim ~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png
 bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png
 bindsym $mod+Shift+Print exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Shift+f exec firefox
+
 exec mako
 exec gentoo-pipewire-launcher
 exec waybar
 exec swayidle -w timeout 300 'swaylock -f -c 1e1416' before-sleep 'swaylock -f -c 1e1416'
+
+bindswitch --reload --locked lid:on output LVDS-1 disable
+bindswitch --reload --locked lid:off output LVDS-1 enable
