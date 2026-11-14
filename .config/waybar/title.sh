@@ -1,5 +1,5 @@
 #!/bin/bash
-LIMIT=20
+LIMIT=28
 F=$(mktemp)
 get() { swaymsg -t get_tree | jq -r '.. | select(.focused? == true) | .name // empty' | head -n1; }
 get > "$F"

@@ -182,8 +182,8 @@ input type:touchpad {
       tap enabled
 }
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes, exit' 'swaymsg exit'
-bindsym Print exec grim ~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png
-bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png
+bindsym Print exec ~/.local/bin/screenshot
+bindsym $mod+Print exec ~/.local/bin/screenshot area
 bindsym $mod+Shift+Print exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+Shift+f exec firefox
 

@@ -43,6 +43,9 @@
 	},
 	"custom/title": {
 		"exec": "$HOME/.config/waybar/title.sh",
+		"min-length": 31,
+		"align": 0,
+		"max-length": 31,
 		"escape": true,
 		"format": "<span foreground='#ecc587'>󰘔</span>  {}"
 	},
