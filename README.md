@@ -79,7 +79,7 @@ These live in `/etc` and `/boot`, so they aren't tracked here.
 
 ### GRUB
 
-- Theme: Wuthering-hsin, based on <SOURCE URL>, renamed and edited by me.
+- Theme: Wuthering-hsin, based on [vinceliuice/Wuthering-grub2-themes](https://github.com/vinceliuice/Wuthering-grub2-themes), renamed and edited by me.
 - Background: rebuilt from Hsin art as a 1920x1080 baseline JPEG, because GRUB can't read progressive JPEGs.
 - `/etc/default/grub`:
   - `GRUB_THEME` points at the theme.
